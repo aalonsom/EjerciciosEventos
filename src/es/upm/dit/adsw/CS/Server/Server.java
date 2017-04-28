@@ -14,8 +14,6 @@ public class Server extends Thread {
 
     private volatile boolean running = true;
 
-    private   int nTimes = 20;
-    private   int id;
     private Internet internet;
     private Address self;
 
@@ -30,6 +28,7 @@ public class Server extends Thread {
 
     public void run() {
 
+        int nTimes = 20;
         Packet receivedPacket, sentPacket;
         // Initial seed
         Random random = new Random(nTimes);
