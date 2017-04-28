@@ -8,7 +8,6 @@ import java.util.HashMap;
 public class Internet {
     private volatile boolean running = true;
     private HashMap messages  = new HashMap<Address, ArrayList<Packet>>();
-    private Address auxAddress;
 
     public synchronized void finish () {
         running = false;

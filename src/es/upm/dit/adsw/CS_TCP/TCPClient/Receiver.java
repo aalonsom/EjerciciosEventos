@@ -5,7 +5,9 @@ import java.io.InputStreamReader;
 import java.net.Socket;
 
 /**
- * Created by aalonso on 31/3/17.
+ *
+ * @author Alejandro Alonso
+ * @version v1.0 20170427
  */
 public class Receiver extends Thread{
 

@@ -6,6 +6,12 @@ package es.upm.dit.adsw.CS_TCP.TCPServer;
 
 import java.net.*;
 
+/**
+ * The main in the server. It accepts the socket and creates
+ * a dispatcher for managing the messages from the client
+ * @author Alejandro Alonso
+ * @version v1.0 20170427
+ */
 public class TCPServer {
 
     public static void main(String[] args) throws Exception {
@@ -21,7 +27,7 @@ public class TCPServer {
             try {
                 connectionSocket = welcomeSocket.accept();
 
-                ConnectionHandler handler = new ConnectionHandler(connectionSocket, id);
+                ConnectionDispatcher handler = new ConnectionDispatcher(connectionSocket, id);
                 System.out.println("Get a socket connection");
                 handler.start();
                 id++;

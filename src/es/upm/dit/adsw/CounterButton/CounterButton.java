@@ -20,19 +20,21 @@ public class CounterButton {
         jfrm.setSize(150, 90);
         jfrm.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        jlab = new JLabel("Press Start to begin timing.");
-        jbtnIncrement = new JButton("Increment");
+        // Configure the button
+        jlab = new JLabel();//("Press Start to begin timing.");
+        jfrm.getContentPane().add(jlab);
+        jlab.setText("The value is: " + Counter);
 
+        jbtnIncrement = new JButton("Increment");
+        jfrm.getContentPane().add(jbtnIncrement);
         jbtnIncrement.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ae) {
                 Counter ++;
                 jlab.setText("The value is: " + Counter);
             }
         });
-        jfrm.getContentPane().add(jlab);
-        jlab.setText("The value is: " + Counter);
 
-        jfrm.getContentPane().add(jbtnIncrement);
+        // Cause the window to be visible
         jfrm.setVisible(true);
     }
 

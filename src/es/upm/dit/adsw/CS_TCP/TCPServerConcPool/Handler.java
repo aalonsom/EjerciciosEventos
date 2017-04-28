@@ -3,39 +3,51 @@ package es.upm.dit.adsw.CS_TCP.TCPServerConcPool;
 import java.util.Random;
 
 /**
- * Created by aalonso on 31/3/17.
+ * A handler (thread) is intended to process a message received from the client.
+ * It waits from a received at a SyncPool. It invokes a ReceiverClient for sending
+ * the message to the client.
+ * @author Alejandro Alonso
+ * @version v1.0 20170427
  */
+
 
 public class Handler extends Thread{
 
     // The id of the server
     private int id;
     // The order of the message received from the client
-    private int sequence;
-    private String message;
-    private Sender sender;
-    private HandlerInfo handlerInfo;
-    private HandlerPool handlerPool;
+    private ReceiverClient receiverClient;
+    // The synchronized pool for the connection
+    private SyncPool syncPool;
 
-    public Handler(int id, HandlerPool handlerPool, Sender sender) {
-        this.id          = id;
-        this.sender      = sender;
-        this.handlerPool = handlerPool;
+    /**
+     * Constructor
+     * @param id Identifier of the associated commection dispatcher
+     * @param syncPool Object for syncronized handlers on a pool
+     * @param receiverClient Object for sending the information to the client
+     */
+    public Handler(int id, SyncPool syncPool, ReceiverClient receiverClient) {
+        this.id             = id;
+        this.syncPool       = syncPool;
+        this.receiverClient = receiverClient;
     }
 
     public void run() {
+
+        HandlerInfo handlerInfo;
         Random random = new Random();
         int bound = 10;
 
         while (true) {
             // Simulate processing time for handling the message
             try {
-                handlerInfo = handlerPool.get();
-                System.out.println(">> Socket: " + id + " Sequence: " + handlerInfo.getSequence());
+                handlerInfo = syncPool.get();
+                System.out.println(">>> Connection: " + id + " Sequence: " + handlerInfo.getSequence());
                 Thread.sleep(random.nextInt(bound) * 1000);
-                sender.send(handlerInfo);
-                //counter.Add()
+                receiverClient.send(handlerInfo);
             } catch (InterruptedException e) {
+                System.out.println("!!! Unexpected exception.");
+                e.printStackTrace();
             }
         }
         //try {
