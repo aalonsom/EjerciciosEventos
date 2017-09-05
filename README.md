@@ -24,3 +24,6 @@ This case study provides a number of alternatives for a client/server paradigm. 
 
 The TCPClient class defines the IP and port of the server. Initially, the IP addresses is 127.0.0.1 for running the case locally. This address can be updated depending on the location of the server. For running these cases it is needed to create a TCPServer program and a set of TCPClients.
 
+5. CS_TCP_Serial
+
+This case is similar to the first alternative in section 4. In this case, objects are sent by sockets. In particular an object in the class "Person" is sent and received successfully. For this purpose, "Person" must implement Serializable, for using the pre-defined.The input and output Streams must use the classes ObjectInputStream and ObjectOutputStream. 
