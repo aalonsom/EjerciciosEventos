@@ -1,29 +1,32 @@
-package es.upm.dit.adsw.CS_TCP.TCPClient;
+package es.upm.dit.adsw.CS_TCP_Serial.TCPClient;
 
-import java.io.*;
-import java.net.*;
+import es.upm.dit.adsw.CS_TCP_Serial.Auxiliar.Person;
+
+import java.io.ObjectOutputStream;
+import java.net.Socket;
 import java.util.Random;
+
 
 /**
  * @author Alejandro Alonso
- * @version v1.0 20170427
+ * @version v1.0 20170904
  */
 public class TCPClient {
 
     public static void main(String[] args) { //throws Exception{
 
         Socket clientSocket;
-        DataOutputStream outToServer;
+        ObjectOutputStream outToServer;
 
-        int nTimes      = 4;
+        int nTimes      = 3;
         String hostname = "127.0.0.1";
         int port        = 6789;
-        Random random = new java.util.Random();
+        Random random = new Random();
         int bound       = 10;
 
         try {
             clientSocket = new Socket(hostname, port);
-            outToServer = new DataOutputStream(clientSocket.getOutputStream());
+            outToServer  = new ObjectOutputStream(clientSocket.getOutputStream());
         } catch (Exception e) {
             e.printStackTrace();
             return;
@@ -37,16 +40,17 @@ public class TCPClient {
             for (int i = 0; i < nTimes; i++) {
                 System.out.println("Sequence: " + i);
 
-                outToServer.writeBytes(i + "\n");
+                outToServer.writeObject(new Person("Pepe", i));
                 outToServer.flush();
 
-                Thread.sleep(random.nextInt(bound) * 1000);
+                Thread.sleep(random.nextInt(bound) * 500);
             }
         } catch (Exception e) { // IOException
             receiver.finish(false, true, 0);
             e.printStackTrace();
         }
 
+        System.out.println("Finish the client");
         receiver.finish(true, false, nTimes);
 
     }

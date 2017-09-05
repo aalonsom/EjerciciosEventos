@@ -1,9 +1,9 @@
-package es.upm.dit.adsw.CS_TCP.TCPServer;
+package es.upm.dit.adsw.CS_TCP_Serial.TCPServer;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.InputStreamReader;
+import java.io.ObjectOutputStream;
+import java.io.ObjectInputStream;
 import java.net.Socket;
+import es.upm.dit.adsw.CS_TCP_Serial.Auxiliar.Person;
 
 
 /**
@@ -16,12 +16,8 @@ import java.net.Socket;
  */
 public class ConnectionDispatcher extends Thread {
 
-    private int msg;
-    private String clientSentence;
-    private String capitalizedSentence;
+    //private String capitalizedSentence;
     private Socket connection;
-    private BufferedReader inFromClient;
-    private DataOutputStream outToClient;
     private int id;
 
     public ConnectionDispatcher(Socket connection, int id) {
@@ -30,26 +26,38 @@ public class ConnectionDispatcher extends Thread {
     }
 
     public void run () {
+
+        Person clientSentence;
+        ObjectInputStream inFromClient;
+        ObjectOutputStream outToClient;
+        int i = 0;
+
         try {
             System.out.println("ConnHandler " + id + ": socket waiting messages.");
-            inFromClient = new BufferedReader
-                    (new InputStreamReader(connection.getInputStream()));
-            outToClient = new DataOutputStream(connection.getOutputStream());
+            inFromClient = new  ObjectInputStream(connection.getInputStream());
+            outToClient = new ObjectOutputStream(connection.getOutputStream());
             while (true) {
                 //msg = inFromClient.read();
-                clientSentence = inFromClient.readLine();
+                clientSentence = (Person) inFromClient.readObject();
                 //capitalizedSentence = clientSentence.toUpperCase() + '\n';
                 if (clientSentence == null) break;
-                System.out.println("Socket " + id + " got: " + clientSentence);
-                outToClient.writeBytes(clientSentence + "\n");
-                outToClient.flush();
+                System.out.println("Socket " + id + " got: " + clientSentence.toString());
+                outToClient.writeObject(clientSentence);
+
+                // Test for not sending input Person
+                //sleep(1000);
+                //outToClient.writeObject(new Person("A ver", i++));
+                //outToClient.flush();
             }
         }
-        catch (java.lang.NullPointerException e) {
+        catch (NullPointerException e) {
             System.out.println("Exception. Socket " + id + " Connection closed");
         }
+        catch (java.io.EOFException e) {
+
+        }
         catch (Exception e) {
-            System.out.println(e);
+            e.printStackTrace();
         }
 
         try {
