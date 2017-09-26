@@ -21,12 +21,15 @@ public class TCPServer {
 
         int id = 0;
 
+        //1. creating a server socket
         ServerSocket welcomeSocket = new ServerSocket(6789);
 
         while (true) {
             try {
+                //2. Wait for connection
                 connectionSocket = welcomeSocket.accept();
 
+                //3. Create a thread for handling the connection
                 ConnectionDispatcher handler = new ConnectionDispatcher(connectionSocket, id);
                 System.out.println("Get a socket connection");
                 handler.start();

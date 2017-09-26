@@ -22,13 +22,16 @@ public class TCPClient {
         int bound       = 10;
 
         try {
+            //1. creating a socket to connect to the server
             clientSocket = new Socket(hostname, port);
+            //2. Create a stream for output information to the connection
             outToServer = new DataOutputStream(clientSocket.getOutputStream());
         } catch (Exception e) {
             e.printStackTrace();
             return;
         }
 
+        // 3. Create a thread for handling the imptuts from the connection
         Receiver receiver = new Receiver(clientSocket);
         receiver.start();
 
@@ -36,7 +39,7 @@ public class TCPClient {
 
             for (int i = 0; i < nTimes; i++) {
                 System.out.println("Sequence: " + i);
-
+                // 4. Write information to the connection
                 outToServer.writeBytes(i + "\n");
                 outToServer.flush();
 

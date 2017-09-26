@@ -32,15 +32,19 @@ public class ConnectionDispatcher extends Thread {
     public void run () {
         try {
             System.out.println("ConnHandler " + id + ": socket waiting messages.");
+
+            // Creating input and output Streams
             inFromClient = new BufferedReader
                     (new InputStreamReader(connection.getInputStream()));
             outToClient = new DataOutputStream(connection.getOutputStream());
             while (true) {
                 //msg = inFromClient.read();
+                // Read from the connection
                 clientSentence = inFromClient.readLine();
                 //capitalizedSentence = clientSentence.toUpperCase() + '\n';
                 if (clientSentence == null) break;
                 System.out.println("Socket " + id + " got: " + clientSentence);
+                // Write to the connection
                 outToClient.writeBytes(clientSentence + "\n");
                 outToClient.flush();
             }

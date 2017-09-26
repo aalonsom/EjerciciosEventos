@@ -33,9 +33,10 @@ public class Receiver extends Thread{
 
         while(!error && !(finished && nValue  <= nReceiver)) {
             try {
+                // 1. Create the Stream for the imput
                 inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                 String message;
-
+                // 2. Read from the connection
                 message = inFromServer.readLine();
                 if (message == null) break;
                 System.out.println("             Client got: " + message);
